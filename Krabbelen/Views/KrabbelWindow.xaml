@@ -1,0 +1,59 @@
+﻿<Window x:Class="Krabbelen.Views.KrabbelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:cmd="clr-namespace:Krabbelen.Commands"
+        xmlns:local="clr-namespace:Krabbelen.Views" 
+				xmlns:viewmodels="clr-namespace:Krabbelen.ViewModels" 
+				d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+				mc:Ignorable="d"
+        Title="KrabbelWindow" 
+				Height="275" 
+				Width="800">
+
+	<Window.CommandBindings>
+		<CommandBinding 
+			Command="cmd:EditCommands.Save"
+			CanExecute="SaveCommand_CanExecute" 
+			Executed="SaveCommand_Execute"/>
+		<CommandBinding 
+			Command="cmd:EditCommands.Cancel"
+			CanExecute="CancelCommand_CanExecute" 
+			Executed="CancelCommand_Execute"/>
+	</Window.CommandBindings>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<TextBox Grid.Row="0" 
+						 x:Name="KrabbelTextBox"
+						 Text="{Binding SelectedKrabbel.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
+						 Margin="0,0,0,10"
+						 Height="100"
+						 AcceptsReturn="True"
+				     AcceptsTab="False"
+             Language="NL-nl"
+             SpellCheck.IsEnabled="True"
+						 VerticalScrollBarVisibility="Auto"/>
+
+		<!-- Keywords -->
+
+		<StackPanel Grid.Row="3" 
+								Orientation="Horizontal"
+								HorizontalAlignment="Right">
+			<Button Content="Save"
+							Width="75"
+							Command="cmd:EditCommands.Save"/>
+			<Button Content="Cancel"
+							Width="75"
+							Margin="10,0,0,0"
+							Command="cmd:EditCommands.Cancel"/>
+		</StackPanel>
+	</Grid>
+</Window>
