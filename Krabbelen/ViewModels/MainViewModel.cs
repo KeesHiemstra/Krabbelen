@@ -1,17 +1,26 @@
-﻿using Krabbelen.Models;
+﻿using CHi.Extensions;
+
+using Krabbelen.Models;
+
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
+using Formatting = Newtonsoft.Json.Formatting;
 
 
 namespace Krabbelen.ViewModels
 {
 	public partial class MainViewModel : BaseViewModel
 	{
+		const string FILENAME = @"%OneDrive%\Data\Krabbelen.json";
 
 		#region [ Fields ]
 
@@ -22,8 +31,10 @@ namespace Krabbelen.ViewModels
 		#region [ Properties ]
 
 		public Krabbel SelectedKrabbel { get; set; }
-		public ObservableCollection<Krabbel> Krabbels { get; set; } = 
+		public ObservableCollection<Krabbel> Krabbels { get; set; } =
 			new ObservableCollection<Krabbel>();
+		public ObservableCollection<Controls.KeywordCard> Keywords { get; set; } =
+			new ObservableCollection<Controls.KeywordCard>();
 
 		#endregion
 
@@ -45,8 +56,7 @@ namespace Krabbelen.ViewModels
 
 			#endregion
 
-
-			Krabbels.Add(new Krabbel() { Id = 1, Text = "Test Krabbel" });
+			LoadFile();
 		}
 
 		#endregion
@@ -56,6 +66,45 @@ namespace Krabbelen.ViewModels
 
 		#endregion
 
+		internal void LoadFile()
+		{
+			string path = FILENAME.TranslatePath();
+			if (File.Exists(path))
+			{
+				string json = File.ReadAllText(path);
+				ObservableCollection<Krabbel> krabbels = 
+					JsonConvert.DeserializeObject<ObservableCollection<Krabbel>>(json);
+				Krabbels = krabbels;
+			}
+			else
+			{
+				Krabbels = new ObservableCollection<Krabbel>();
+			}
+		}
+
+		internal void Shutdown()
+		{
+			SaveFile();
+			Application.Current.Shutdown();
+		}
+
+		internal void SaveFile()
+		{
+			string json = JsonConvert.SerializeObject(Krabbels, Formatting.Indented);
+			try
+			{
+				using (StreamWriter stream = new StreamWriter(FILENAME.TranslatePath()))
+				{
+					stream.Write(json);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error saving file: {ex.Message}",
+					"Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+		}
 
 		internal void NewKrabbel()
 		{
@@ -67,6 +116,7 @@ namespace Krabbelen.ViewModels
 		{
 			SelectedKrabbel = selectedKrabbel;
 			KrabbelViewModel view = new KrabbelViewModel(this);
+			CopyKeywords();
 			view.Show(SelectedKrabbel);
 		}
 
@@ -94,16 +144,55 @@ namespace Krabbelen.ViewModels
 
 		}
 
-		internal void KeyDown(object sender, KeyEventArgs e)
+		/// <summary>
+		/// Removes the specified keyword from the selected note and from the Keywords collection.
+		/// </summary>
+		/// <remarks>
+		/// If SelectedNote or its Keywords collection is null, no action is taken. 
+		/// Removes the first entry in Keywords whose KeywordText.Text equals the provided keyword;
+		/// if no match is found, no change occurs.
+		/// </remarks>
+		/// <param name="keyword">The keyword text to remove.</param>
+		public void RemoveKeyword(string keyword)
 		{
-			if (sender == null) { return; }
-			foreach (Krabbel item in ((DataGrid)e.Source).SelectedItems)
+			if (SelectedKrabbel != null && SelectedKrabbel.Keywords != null)
 			{
-				if (item.Id != 0)
+				//Delete the keyword from the note and from the ObservableCollection of KeywordCards.
+				SelectedKrabbel.Keywords.Remove(keyword);
+				Keywords.Remove(Keywords.FirstOrDefault(x => x.KeywordText.Text == keyword));
+			}
+		}
+
+		/// <summary>
+		/// Make a copy of the keywords into the ObservableCollection of KeywordCards.
+		/// </summary>
+		private void CopyKeywords()
+		{
+			if (SelectedKrabbel == null) return;
+
+			Keywords.Clear();
+			if (SelectedKrabbel.Keywords != null)
+			{
+				foreach (string keyword in SelectedKrabbel.Keywords)
 				{
-					OpenKrabbel(item);
+					Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
 				}
 			}
 		}
+
+		internal void CreateNewKeyword()
+		{
+			string newKeyword;
+			QuestionBoxViewModel question = new QuestionBoxViewModel(this);
+			newKeyword = question.Show("Keyword:", "New Keyword", SelectedKrabbel?.Keywords);
+
+			if (string.IsNullOrWhiteSpace(newKeyword))
+			{
+				return;
+			}
+			SelectedKrabbel?.Keywords.Add(newKeyword);
+			CopyKeywords();
+		}
+
 	}
 }

@@ -19,7 +19,7 @@ namespace Krabbelen.Models
 				}
 			} 
 		}
-		public ObservableCollection<string> Keywords { get; set; }
+		public ObservableCollection<string> Keywords { get; set; } = new ObservableCollection<string>();
 		public DateTime Created { get; private set; } = DateTime.Now;
 		public DateTime Changed { get; set; }
 		public bool HasChanged { get; private set; }

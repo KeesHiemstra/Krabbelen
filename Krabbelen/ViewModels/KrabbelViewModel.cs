@@ -1,12 +1,6 @@
 ﻿using Krabbelen.Models;
 using Krabbelen.Views;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Krabbelen.ViewModels
 {
 	public partial class KrabbelViewModel : BaseViewModel
@@ -44,7 +38,7 @@ namespace Krabbelen.ViewModels
 				Left = VM.View.Left + 100,
 				Top = VM.View.Top + 20,
 				Title = "New Krabbel",
-				DataContext = this
+				// DataContext = this [Wrong data context]
 			};
 			View = view;
 			View.ShowDialog();

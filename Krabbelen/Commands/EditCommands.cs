@@ -16,6 +16,7 @@ namespace Krabbelen.Commands
 				typeof(EditCommands),
 				new InputGestureCollection()
 				{
+					new KeyGesture(Key.S, ModifierKeys.Alt)
 				}
 			);
 
@@ -24,10 +25,7 @@ namespace Krabbelen.Commands
 				"_Cancel",
 				"Cancel",
 				typeof(EditCommands),
-				new InputGestureCollection()
-				{
-
-				}
+				new InputGestureCollection() { }
 			);
 
 	}

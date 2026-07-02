@@ -1,0 +1,4 @@
+﻿Version history of the Krabbelen application.
+=============================================
+Version 1.0.0.1 (2026-07-02)
+* Initial version.

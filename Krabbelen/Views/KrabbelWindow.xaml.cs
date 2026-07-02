@@ -1,8 +1,6 @@
-﻿using Krabbelen.Models;
-using Krabbelen.ViewModels;
+﻿using Krabbelen.ViewModels;
 
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Krabbelen.Views
@@ -12,14 +10,14 @@ namespace Krabbelen.Views
 	/// </summary>
 	public partial class KrabbelWindow : Window
 	{
-		private KrabbelViewModel kVM;
+		public MainViewModel VM { get; set; }
 
 		public KrabbelWindow(KrabbelViewModel krabbelViewModel)
 		{
 			InitializeComponent();
-			DataContext = krabbelViewModel;
 
-			kVM = krabbelViewModel;
+			VM = krabbelViewModel.VM;
+			DataContext = VM;
 			KrabbelTextBox.Focus();
 		}
 
@@ -28,7 +26,7 @@ namespace Krabbelen.Views
 
 		private void SaveCommand_Execute(object sender, ExecutedRoutedEventArgs e)
 		{
-			kVM.VM.SaveKrabbel();
+			VM.SaveKrabbel();
 			DialogResult = true;
 		}
 
@@ -37,6 +35,11 @@ namespace Krabbelen.Views
 
 		private void CancelCommand_Execute(object sender, ExecutedRoutedEventArgs e) => 
 			DialogResult = false;
+
+		private void AddKeyword(object sender, RoutedEventArgs e)
+		{
+			VM.CreateNewKeyword();
+		}
 
 	}
 }

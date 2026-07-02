@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				xmlns:cmd="clr-namespace:Krabbelen.Commands"
+				xmlns:controls="clr-namespace:Krabbelen.Controls"
         xmlns:local="clr-namespace:Krabbelen" 
 				xmlns:viewmodels="clr-namespace:Krabbelen.ViewModels" 
 				d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"

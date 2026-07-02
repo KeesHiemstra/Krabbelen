@@ -9,7 +9,7 @@ namespace Krabbelen
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window, INotifyPropertyChanged
+	public partial class MainWindow : Window
 	{
 
 		#region [ Fields ]
@@ -38,7 +38,7 @@ namespace Krabbelen
 
 		#region [ Public methods ]
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		//public event PropertyChangedEventHandler PropertyChanged;
 
 		#endregion
 
@@ -46,7 +46,7 @@ namespace Krabbelen
 			e.CanExecute = true;
 
 		private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e) => 
-			Application.Current.Shutdown();
+			MainVM.Shutdown();
 
 		private void NewKrabbelCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) => 
 			e.CanExecute = true;
