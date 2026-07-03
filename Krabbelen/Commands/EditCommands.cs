@@ -28,5 +28,13 @@ namespace Krabbelen.Commands
 				new InputGestureCollection() { }
 			);
 
+		public static readonly RoutedUICommand Delete = new RoutedUICommand
+			(
+				"_Delete",
+				"Delete",
+				typeof(EditCommands),
+				new InputGestureCollection() { }
+			);
+
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using CHi.Extensions;
 
 using Krabbelen.Models;
+using Krabbelen.Views;
 
 using Newtonsoft.Json;
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,13 +22,20 @@ namespace Krabbelen.ViewModels
 {
 	public partial class MainViewModel : BaseViewModel
 	{
-		const string FILENAME = @"%OneDrive%\Data\Krabbelen.json";
 
 		#region [ Fields ]
 
+		const string FILENAME = @"%OneDrive%\Data\Krabbelen.json";
+#if DEBUG
+		public bool KrabblesChanged = false;
+#else
+		public bool KrabblesChanged = true; // Always save in release mode
+#endif
+		public bool AskClosing = true;
+		public bool DeleteOpenKrabbel = false;
 		public readonly MainWindow View;
 
-		#endregion
+#endregion
 
 		#region [ Properties ]
 
@@ -66,6 +75,12 @@ namespace Krabbelen.ViewModels
 
 		#endregion
 
+		/// <summary>
+		/// Loads the Krabbels from the JSON file specified by FILENAME. 
+		/// If the file exists, it reads the content, deserializes it into an ObservableCollection of 
+		/// Krabbel objects, and assigns it to the Krabbels property. 
+		/// If the file does not exist, it initializes Krabbels as an empty collection.
+		/// </summary>
 		internal void LoadFile()
 		{
 			string path = FILENAME.TranslatePath();
@@ -82,15 +97,22 @@ namespace Krabbelen.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Saves the current state of the application and shuts down the application.
+		/// </summary>
 		internal void Shutdown()
 		{
+			AskClosing = false;
 			SaveFile();
 			Application.Current.Shutdown();
 		}
 
+		/// <summary>
+		/// Saves the current collection of Krabbels to a JSON file specified by FILENAME.
+		/// </summary>
 		internal void SaveFile()
 		{
-			string json = JsonConvert.SerializeObject(Krabbels, Formatting.Indented);
+			string json = JsonConvert.SerializeObject(Krabbels.OrderByDescending(k => k.Changed), Formatting.Indented);
 			try
 			{
 				using (StreamWriter stream = new StreamWriter(FILENAME.TranslatePath()))
@@ -109,6 +131,7 @@ namespace Krabbelen.ViewModels
 		internal void NewKrabbel()
 		{
 			SelectedKrabbel = new Krabbel();
+			SelectedKrabbel.Created = DateTime.Now;
 			OpenKrabbel(SelectedKrabbel);
 		}
 
@@ -124,13 +147,17 @@ namespace Krabbelen.ViewModels
 		{
 			if (SelectedKrabbel.Id == 0)
 			{
-				Krabbels.Add(SelectedKrabbel);
+				Krabbels.Insert(0, SelectedKrabbel);
 				SelectedKrabbel.Id = Krabbels.Count;
-				SelectedKrabbel.Changed = DateTime.Now;
-
 			}
+			SelectedKrabbel.Changed = DateTime.Now;
 		}
 
+		/// <summary>
+		/// Open the selected Krabbel in a new window for editing.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		internal void MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			if (sender == null) { return; }
@@ -142,6 +169,17 @@ namespace Krabbelen.ViewModels
 				}
 			}
 
+			// Deleting the current krabbel was only possible that the sequence was closed.
+			if (DeleteOpenKrabbel)
+			{
+				Krabbels.Remove(SelectedKrabbel);
+				SelectedKrabbel = null;
+				DeleteOpenKrabbel = false;
+				return;
+			}
+
+			View.MainDataGrid.ItemsSource = null;
+			View.MainDataGrid.ItemsSource = Krabbels;
 		}
 
 		/// <summary>
@@ -175,16 +213,26 @@ namespace Krabbelen.ViewModels
 			{
 				foreach (string keyword in SelectedKrabbel.Keywords)
 				{
-					Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
+					// After 3 times, an exception is thrown, but can be dismissed.
+					try
+					{
+						Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
+
+					}
+					catch {	}				
 				}
 			}
 		}
 
+		/// <summary>
+		/// Adds a new keyword to the selected krabbel and updates the Keywords collection.
+		/// </summary>
 		internal void CreateNewKeyword()
 		{
 			string newKeyword;
 			QuestionBoxViewModel question = new QuestionBoxViewModel(this);
 			newKeyword = question.Show("Keyword:", "New Keyword", SelectedKrabbel?.Keywords);
+			newKeyword = newKeyword?.Trim();
 
 			if (string.IsNullOrWhiteSpace(newKeyword))
 			{
@@ -192,6 +240,18 @@ namespace Krabbelen.ViewModels
 			}
 			SelectedKrabbel?.Keywords.Add(newKeyword);
 			CopyKeywords();
+		}
+
+		/// <summary>
+		/// Deletes the currently selected Krabbel from the collection of Krabbels.
+		/// </summary>
+		internal void DeleteKrabbel(object sender)
+		{
+			if (SelectedKrabbel != null)
+			{
+				DeleteOpenKrabbel = true;
+				((KrabbelWindow)sender).Close();
+			}
 		}
 
 	}

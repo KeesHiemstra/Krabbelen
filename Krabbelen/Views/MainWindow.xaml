@@ -11,7 +11,8 @@
 				mc:Ignorable="d"
         Title="MainWindow" 
 				Height="450" 
-				Width="800">
+				Width="800"
+				Closing="Window_Closing">
 
 	<Window.CommandBindings>
 		<CommandBinding 
@@ -42,7 +43,8 @@
 			</MenuItem>
 		</Menu>
 
-		<DataGrid Grid.Row="2" 
+		<DataGrid Name="MainDataGrid" 
+							Grid.Row="2" 
 							ItemsSource="{Binding Krabbels}" 
 							SelectedItem="{Binding SelectedKrabbel, Mode=TwoWay}"
 							AutoGenerateColumns="False"
@@ -51,9 +53,12 @@
 							IsReadOnly="True"
 							MouseDoubleClick="DataGrid_MouseDoubleClick">
 			<DataGrid.Columns>
-				<!--DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto"/-->
-				<DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="2*"/>
-				<DataGridTextColumn Header="Keywords" Binding="{Binding Keywords}" Width="*"/>
+				<DataGridTextColumn Header="Text" 
+														Binding="{Binding Text}" 
+														Width="2*"/>
+				<DataGridTextColumn Header="Keywords" 
+														Binding="{Binding DisplayKeywords}" 
+														Width="*"/>
 			</DataGrid.Columns>
 		</DataGrid>
 

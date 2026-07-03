@@ -20,16 +20,25 @@ namespace Krabbelen.Models
 			} 
 		}
 		public ObservableCollection<string> Keywords { get; set; } = new ObservableCollection<string>();
-		public DateTime Created { get; private set; } = DateTime.Now;
+		public DateTime Created { get; set; }
 		public DateTime Changed { get; set; }
-		public bool HasChanged { get; private set; }
+
+		public string DisplayKeywords
+		{
+			get
+			{
+				if (Keywords == null || Keywords.Count == 0)
+					return string.Empty;
+				return string.Join(", ", Keywords);
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged()
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text)));
 			Changed = DateTime.Now;
-			HasChanged = true;
+			//HasChanged = true;
 		}
 
 	}

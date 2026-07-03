@@ -36,10 +36,13 @@ namespace Krabbelen.Views
 		private void CancelCommand_Execute(object sender, ExecutedRoutedEventArgs e) => 
 			DialogResult = false;
 
-		private void AddKeyword(object sender, RoutedEventArgs e)
-		{
-			VM.CreateNewKeyword();
-		}
+		private void DeleteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) =>
+			e.CanExecute = VM.SelectedKrabbel.Id != 0;
+
+		private void DeleteCommand_Execute(object sender, ExecutedRoutedEventArgs e) =>
+			VM.DeleteKrabbel(sender);
+
+		private void AddKeyword(object sender, RoutedEventArgs e) => VM.CreateNewKeyword();
 
 	}
 }
