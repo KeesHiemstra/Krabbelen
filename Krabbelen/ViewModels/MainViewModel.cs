@@ -26,11 +26,6 @@ namespace Krabbelen.ViewModels
 		#region [ Fields ]
 
 		const string FILENAME = @"%OneDrive%\Data\Krabbelen.json";
-#if DEBUG
-		public bool KrabblesChanged = false;
-#else
-		public bool KrabblesChanged = true; // Always save in release mode
-#endif
 		public bool AskClosing = true;
 		public bool DeleteOpenKrabbel = false;
 		public readonly MainWindow View;
@@ -44,6 +39,22 @@ namespace Krabbelen.ViewModels
 			new ObservableCollection<Krabbel>();
 		public ObservableCollection<Controls.KeywordCard> Keywords { get; set; } =
 			new ObservableCollection<Controls.KeywordCard>();
+
+		// This property is used to track if any changes have been made to the Krabbels
+		// collection or any of its items. The OnPropertyChanged event handler for the
+		// Krabbels collection and its items will set this property to true when a change occurs.
+		public bool KrabbelsChanged 
+		{ 
+			get; 
+			set
+			{
+				if (value != field)
+				{
+					field = value;
+					OnPropertyChanged();
+				}
+			}
+		} = false;
 
 		#endregion
 
@@ -60,7 +71,7 @@ namespace Krabbelen.ViewModels
 #if DEBUG
 			View.Title = $"{name} - {version} (Debug)";
 #else
-      View.Title = $"{name} - {version}";
+			View.Title = $"{name} - {version}";
 #endif
 
 			#endregion
@@ -94,6 +105,32 @@ namespace Krabbelen.ViewModels
 			else
 			{
 				Krabbels = new ObservableCollection<Krabbel>();
+			}
+		}
+
+		internal void WindowClosing(object sender, CancelEventArgs e)
+		{
+			// If there are no unsaved changes, we can exit without prompting the user.
+			if (!KrabbelsChanged) { return; }
+
+			if (AskClosing)
+			{
+				MessageBoxResult result = MessageBox.Show(
+					"Do you want to save your changes before closing?",
+					"Krabbelen",
+					MessageBoxButton.YesNoCancel,
+					MessageBoxImage.Question);
+				switch (result)
+				{
+					case MessageBoxResult.Yes:
+						SaveFile();
+						break;
+					case MessageBoxResult.No:
+						break;
+					case MessageBoxResult.Cancel:
+						e.Cancel = true;
+						break;
+				}
 			}
 		}
 
@@ -131,7 +168,6 @@ namespace Krabbelen.ViewModels
 		internal void NewKrabbel()
 		{
 			SelectedKrabbel = new Krabbel();
-			SelectedKrabbel.Created = DateTime.Now;
 			OpenKrabbel(SelectedKrabbel);
 		}
 
@@ -140,7 +176,7 @@ namespace Krabbelen.ViewModels
 			SelectedKrabbel = selectedKrabbel;
 			KrabbelViewModel view = new KrabbelViewModel(this);
 			CopyKeywords();
-			view.Show(SelectedKrabbel);
+			KrabbelsChanged = KrabbelsChanged || view.Show(SelectedKrabbel);
 		}
 
 		public void SaveKrabbel()
@@ -151,6 +187,7 @@ namespace Krabbelen.ViewModels
 				SelectedKrabbel.Id = Krabbels.Count;
 			}
 			SelectedKrabbel.Changed = DateTime.Now;
+			KrabbelsChanged = true;
 		}
 
 		/// <summary>
@@ -175,6 +212,7 @@ namespace Krabbelen.ViewModels
 				Krabbels.Remove(SelectedKrabbel);
 				SelectedKrabbel = null;
 				DeleteOpenKrabbel = false;
+				KrabbelsChanged = true;
 				return;
 			}
 
@@ -198,6 +236,7 @@ namespace Krabbelen.ViewModels
 				//Delete the keyword from the note and from the ObservableCollection of KeywordCards.
 				SelectedKrabbel.Keywords.Remove(keyword);
 				Keywords.Remove(Keywords.FirstOrDefault(x => x.KeywordText.Text == keyword));
+				KrabbelsChanged = true;
 			}
 		}
 
@@ -234,11 +273,10 @@ namespace Krabbelen.ViewModels
 			newKeyword = question.Show("Keyword:", "New Keyword", SelectedKrabbel?.Keywords);
 			newKeyword = newKeyword?.Trim();
 
-			if (string.IsNullOrWhiteSpace(newKeyword))
-			{
-				return;
-			}
+			if (string.IsNullOrWhiteSpace(newKeyword)) { return; }
+
 			SelectedKrabbel?.Keywords.Add(newKeyword);
+			KrabbelsChanged = true;
 			CopyKeywords();
 		}
 
@@ -251,6 +289,7 @@ namespace Krabbelen.ViewModels
 			{
 				DeleteOpenKrabbel = true;
 				((KrabbelWindow)sender).Close();
+				KrabbelsChanged = true;
 			}
 		}
 

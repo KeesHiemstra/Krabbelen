@@ -56,31 +56,7 @@ namespace Krabbelen
 		private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) => 
 			MainVM.MouseDoubleClick(sender, e);
 
-		private void Window_Closing(object sender, CancelEventArgs e)
-		{
-			// If there are no unsaved changes, we can exit without prompting the user.
-			if (!MainVM.KrabblesChanged) { return; }
-
-			if (MainVM.AskClosing)
-			{
-				MessageBoxResult result = MessageBox.Show(
-					"Do you want to save your changes before closing?",
-					"Krabbelen",
-					MessageBoxButton.YesNoCancel,
-					MessageBoxImage.Question);
-				switch (result)
-				{
-					case MessageBoxResult.Yes:
-						MainVM.SaveFile();
-						break;
-					case MessageBoxResult.No:
-						break;
-					case MessageBoxResult.Cancel:
-						e.Cancel = true;
-						break;
-				}
-			}
-		}
+		private void Window_Closing(object sender, CancelEventArgs e) => MainVM.WindowClosing(sender, e);
 
 	}
 }

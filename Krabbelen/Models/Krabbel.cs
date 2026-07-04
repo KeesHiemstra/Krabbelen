@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -20,9 +22,9 @@ namespace Krabbelen.Models
 			} 
 		}
 		public ObservableCollection<string> Keywords { get; set; } = new ObservableCollection<string>();
-		public DateTime Created { get; set; }
 		public DateTime Changed { get; set; }
 
+		[JsonIgnore]
 		public string DisplayKeywords
 		{
 			get
@@ -38,7 +40,6 @@ namespace Krabbelen.Models
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text)));
 			Changed = DateTime.Now;
-			//HasChanged = true;
 		}
 
 	}

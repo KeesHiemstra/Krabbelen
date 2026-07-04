@@ -31,6 +31,7 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<Menu Grid.Row="0">
@@ -62,6 +63,24 @@
 			</DataGrid.Columns>
 		</DataGrid>
 
+		<StatusBar Grid.Row="4">
+			<StatusBarItem>
+				<TextBlock Text="{Binding Krabbels.Count, 
+					StringFormat=Total Krabbels: {0}, 
+					Mode=OneWay, 
+					UpdateSourceTrigger=PropertyChanged }"/>
+			</StatusBarItem>
+			<Separator/>
+			<StatusBarItem>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Unsaved Changes: "/>
+					<CheckBox IsChecked="{Binding KrabbelsChanged, 
+						Mode=OneWay, 
+						UpdateSourceTrigger=PropertyChanged }" 
+						IsEnabled="False"/>
+				</StackPanel>
+			</StatusBarItem>
+		</StatusBar>
 	</Grid>
 
 </Window>

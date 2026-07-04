@@ -30,7 +30,7 @@ namespace Krabbelen.ViewModels
 
 		#region [ Public methods ]
 
-		public void Show(Krabbel selectedKrabbel)
+		public bool Show(Krabbel selectedKrabbel)
 		{
 			SelectedKrabbel = selectedKrabbel;
 			KrabbelWindow view = new KrabbelWindow(this)
@@ -41,7 +41,8 @@ namespace Krabbelen.ViewModels
 				// DataContext = this [Wrong data context]
 			};
 			View = view;
-			View.ShowDialog();
+			bool? result = View.ShowDialog();
+			return result ?? false;
 		}
 
 		#endregion

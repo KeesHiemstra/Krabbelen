@@ -1,6 +1,9 @@
 ﻿Version history of the Krabbelen application.
 =============================================
-Version 1.0.0.2 (2026-07-03)
+Version 1.0.2.3 (2026-07-04)
+* Added StatusBar to the MainWindow to display the number of krabbels and changes need to be saved.
+
+Version 1.0.1.2 (2026-07-03)
 * Added a new property DisplayKeywords to the Krabbel class, which returns a comma-separated string of keywords for display purposes.
 * Bug fix: Fixed an issue where the application would crash when adding a new keyword to a krabbel. The error occurred due to an unhandled exception when creating a new KeywordCard. Now, the application will handle the exception gracefully and allow the user to continue using the application without interruption.
 * Added deletion of a open krabbel.
