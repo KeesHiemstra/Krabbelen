@@ -27,5 +27,16 @@ namespace Krabbelen.Commands
 				}
 			);
 
+		public static readonly RoutedUICommand ShowHistory = new RoutedUICommand
+			(
+				"_Show History",
+				"ShowHistory",
+				typeof(MainCommands),
+				new InputGestureCollection()
+				{
+					new KeyGesture(Key.OemQuestion)
+				}
+			);
+
 	}
 }

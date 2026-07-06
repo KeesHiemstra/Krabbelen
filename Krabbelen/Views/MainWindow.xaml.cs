@@ -58,5 +58,11 @@ namespace Krabbelen
 
 		private void Window_Closing(object sender, CancelEventArgs e) => MainVM.WindowClosing(sender, e);
 
+		private void ShowHistoryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) =>
+			e.CanExecute = true;
+
+		private void ShowHistoryCommand_Execute(object sender, ExecutedRoutedEventArgs e) =>
+			MainVM.ShowHistory();
+
 	}
 }

@@ -1,6 +1,6 @@
 # Krabbelen
 
-A small application to store small memories. The application uses the `MVVM architectural pattern`.
+A small application to store small thoughts. The application uses the `MVVM architectural pattern`.
 
 A krabbel can have `keywords` and the `ObservableCollection<string>` was show as `(Collection)` in the `DataGrid`.
 

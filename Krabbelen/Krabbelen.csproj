@@ -61,12 +61,19 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\PathExtensions.cs" />
     <Compile Include="ViewModels\QuestionBoxViewModel.cs" />
+    <Compile Include="Views\HistoryWindow.xaml.cs">
+      <DependentUpon>HistoryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\QuestionBoxWindow.xaml.cs">
       <DependentUpon>QuestionBoxWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\KeywordCard.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="Views\HistoryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\KrabbelWindow.xaml">
       <SubType>Designer</SubType>

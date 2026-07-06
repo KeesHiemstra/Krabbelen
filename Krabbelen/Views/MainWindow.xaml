@@ -23,6 +23,10 @@
 			Command="cmd:MainCommands.NewKrabbel"
 			CanExecute="NewKrabbelCommand_CanExecute" 
 			Executed="NewKrabbelCommand_Execute"/>
+		<CommandBinding 
+			Command="cmd:MainCommands.ShowHistory"
+			CanExecute="ShowHistoryCommand_CanExecute" 
+			Executed="ShowHistoryCommand_Execute"/>
 	</Window.CommandBindings>
 
 	<Grid>
@@ -42,6 +46,7 @@
 			<MenuItem Header="_Krabbel">
 				<MenuItem Command="cmd:MainCommands.NewKrabbel"/>
 			</MenuItem>
+			<MenuItem Header="?" Command="cmd:MainCommands.ShowHistory"/>
 		</Menu>
 
 		<DataGrid Name="MainDataGrid" 

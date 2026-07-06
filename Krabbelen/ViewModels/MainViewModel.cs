@@ -293,5 +293,16 @@ namespace Krabbelen.ViewModels
 			}
 		}
 
+		public void ShowHistory()
+		{
+
+			_ = new HistoryWindow()
+			{
+				Left = View.Left + 20,
+				Top = View.Top + 20
+			}.ShowDialog();
+
+		}
+
 	}
 }
