@@ -3,6 +3,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Krabbelen.Models
 {
@@ -36,10 +37,9 @@ namespace Krabbelen.Models
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
-		private void OnPropertyChanged()
+		public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
 		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text)));
-			Changed = DateTime.Now;
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 	}
