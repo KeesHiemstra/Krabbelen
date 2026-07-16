@@ -1,6 +1,4 @@
-﻿using CHi.Log;
-
-using Krabbelen.ViewModels;
+﻿using Krabbelen.ViewModels;
 
 using System.ComponentModel;
 using System.Windows;

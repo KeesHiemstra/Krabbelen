@@ -13,7 +13,7 @@ namespace Krabbelen.ViewModels
 
 		private readonly MainViewModel VM;
 		private QuestionBoxWindow View;
-		private ObservableCollection<string>? ForbiddenKeywords;
+		private ObservableCollection<string> ForbiddenKeywords;
 
 		#endregion
 
@@ -34,9 +34,9 @@ namespace Krabbelen.ViewModels
 		#region [ Public methods ]
 
 		public string Show(
-			string question, 
-			string title, 
-			ObservableCollection<string>? forbiddenKeywords)
+			string question,
+			string title,
+			ObservableCollection<string> forbiddenKeywords)
 		{
 			string result = string.Empty;
 
@@ -81,7 +81,7 @@ namespace Krabbelen.ViewModels
 					if (!ValidAnswer(View.Answer.Text))
 					{
 						// Do not accept invalid answers
-						return; 
+						return;
 					}
 					// Process the answer
 					View.Close();

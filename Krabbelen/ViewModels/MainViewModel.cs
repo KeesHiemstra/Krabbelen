@@ -315,5 +315,6 @@ namespace Krabbelen.ViewModels
 		{
 			((KrabbelWindow)sender).Close();
 		}
+
 	}
 }
