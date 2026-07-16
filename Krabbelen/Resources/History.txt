@@ -1,5 +1,10 @@
 ﻿Version history of the Krabbelen application.
 =============================================
+Version 1.0.3.6 (2026-07-16)
+* Added Escape key handling to close the KrabbelWindow when pressed. This allows users to quickly exit the window without needing to click the close button.
+* Bug fix: Keywords.Clear() was replaced with a new ObservableCollection to avoid issues with the UI.
+  It looked like that Keywords.Clear() causes unexpected errors.
+
 Version 1.0.3.5 (2026-07-14)
 * Bug fix: Double-clicking on a krabbel in the DataGrid now correctly opens the selected krabbel, even when a selected saved.
 

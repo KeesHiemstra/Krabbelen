@@ -198,6 +198,7 @@ namespace Krabbelen.ViewModels
 		/// <param name="e"></param>
 		internal void MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
+
 			if (sender == null) { return; }
 
 			// Only one selected item is allowed.
@@ -248,10 +249,13 @@ namespace Krabbelen.ViewModels
 		/// </summary>
 		private void CopyKeywords()
 		{
+
 			if (SelectedKrabbel == null) return;
 
-			Keywords.Clear();
-			if (SelectedKrabbel.Keywords != null)
+			// Replaced Keywords.Clear() with a new ObservableCollection to avoid errors.
+			Keywords = new ObservableCollection<Controls.KeywordCard>();
+
+			if (SelectedKrabbel.Keywords != null && SelectedKrabbel.Keywords.Count > 0)
 			{
 				foreach (string keyword in SelectedKrabbel.Keywords)
 				{
@@ -259,9 +263,8 @@ namespace Krabbelen.ViewModels
 					try
 					{
 						Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
-
 					}
-					catch {	}				
+					catch { }				
 				}
 			}
 		}
@@ -271,6 +274,7 @@ namespace Krabbelen.ViewModels
 		/// </summary>
 		internal void CreateNewKeyword()
 		{
+
 			string newKeyword;
 			QuestionBoxViewModel question = new QuestionBoxViewModel(this);
 			newKeyword = question.Show("Keyword:", "New Keyword", SelectedKrabbel?.Keywords);
@@ -307,5 +311,9 @@ namespace Krabbelen.ViewModels
 
 		}
 
+		internal void CloseKrabbelView(object sender)
+		{
+			((KrabbelWindow)sender).Close();
+		}
 	}
 }

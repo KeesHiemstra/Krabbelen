@@ -44,5 +44,10 @@ namespace Krabbelen.Views
 
 		private void AddKeyword(object sender, RoutedEventArgs e) => VM.CreateNewKeyword();
 
+		private void Window_KeyUp(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Escape)
+				VM.CloseKrabbelView(sender);
+		}
 	}
 }
