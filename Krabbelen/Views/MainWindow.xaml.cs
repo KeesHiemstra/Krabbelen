@@ -27,10 +27,6 @@ namespace Krabbelen
 		public MainWindow()
 		{
 
-#if DEBUG
-			Log.Write("Krabbelen started");
-#endif
-
 			InitializeComponent();
 
 			MainVM = new MainViewModel(this);
