@@ -1,4 +1,6 @@
-﻿using Krabbelen.ViewModels;
+﻿using CHi.Log;
+
+using Krabbelen.ViewModels;
 
 using System.ComponentModel;
 using System.Windows;
@@ -27,6 +29,10 @@ namespace Krabbelen
 		public MainWindow()
 		{
 
+#if DEBUG
+			Log.Write("Krabbelen started");
+#endif
+
 			InitializeComponent();
 
 			MainVM = new MainViewModel(this);
@@ -41,19 +47,19 @@ namespace Krabbelen
 
 		#endregion
 
-		private void ExitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) => 
+		private void ExitCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) =>
 			e.CanExecute = true;
 
-		private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e) => 
+		private void ExitCommand_Execute(object sender, ExecutedRoutedEventArgs e) =>
 			MainVM.Shutdown();
 
-		private void NewKrabbelCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) => 
+		private void NewKrabbelCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e) =>
 			e.CanExecute = true;
 
-		private void NewKrabbelCommand_Execute(object sender, ExecutedRoutedEventArgs e) => 
+		private void NewKrabbelCommand_Execute(object sender, ExecutedRoutedEventArgs e) =>
 			MainVM.NewKrabbel();
 
-		private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) => 
+		private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
 			MainVM.MouseDoubleClick(sender, e);
 
 		private void Window_Closing(object sender, CancelEventArgs e) => MainVM.WindowClosing(sender, e);

@@ -176,7 +176,8 @@ namespace Krabbelen.ViewModels
 			SelectedKrabbel = selectedKrabbel;
 			KrabbelViewModel view = new KrabbelViewModel(this);
 			CopyKeywords();
-			KrabbelsChanged = KrabbelsChanged || view.Show(SelectedKrabbel);
+			bool result = view.Show(SelectedKrabbel);
+			KrabbelsChanged = KrabbelsChanged || result;
 		}
 
 		public void SaveKrabbel()
@@ -197,13 +198,16 @@ namespace Krabbelen.ViewModels
 		/// <param name="e"></param>
 		internal void MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
+
 			if (sender == null) { return; }
-			foreach (Krabbel item in ((DataGrid)e.Source).SelectedItems)
+
+			// Only one selected item is allowed.
+			if (((DataGrid)e.Source).SelectedItems.Count != 1) { return; }
+			
+			Krabbel selectedItem = (Krabbel)((DataGrid)e.Source).SelectedItem;
+			if (selectedItem.Id != 0)
 			{
-				if (item.Id != 0)
-				{
-					OpenKrabbel(item);
-				}
+				OpenKrabbel(selectedItem);
 			}
 
 			// Deleting the current krabbel was only possible that the sequence was closed.
@@ -245,10 +249,13 @@ namespace Krabbelen.ViewModels
 		/// </summary>
 		private void CopyKeywords()
 		{
+
 			if (SelectedKrabbel == null) return;
 
-			Keywords.Clear();
-			if (SelectedKrabbel.Keywords != null)
+			// Replaced Keywords.Clear() with a new ObservableCollection to avoid errors.
+			Keywords = new ObservableCollection<Controls.KeywordCard>();
+
+			if (SelectedKrabbel.Keywords != null && SelectedKrabbel.Keywords.Count > 0)
 			{
 				foreach (string keyword in SelectedKrabbel.Keywords)
 				{
@@ -256,9 +263,8 @@ namespace Krabbelen.ViewModels
 					try
 					{
 						Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
-
 					}
-					catch {	}				
+					catch { }				
 				}
 			}
 		}
@@ -268,6 +274,7 @@ namespace Krabbelen.ViewModels
 		/// </summary>
 		internal void CreateNewKeyword()
 		{
+
 			string newKeyword;
 			QuestionBoxViewModel question = new QuestionBoxViewModel(this);
 			newKeyword = question.Show("Keyword:", "New Keyword", SelectedKrabbel?.Keywords);
@@ -304,5 +311,9 @@ namespace Krabbelen.ViewModels
 
 		}
 
+		internal void CloseKrabbelView(object sender)
+		{
+			((KrabbelWindow)sender).Close();
+		}
 	}
 }
