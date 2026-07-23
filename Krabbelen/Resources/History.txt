@@ -1,5 +1,8 @@
 ﻿Version history of the Krabbelen application.
 =============================================
+Version 1.0.3.7 (2026-07-23)
+* Bug fix: Copied Keywords.Clear() back. New keywords was not directly visible.
+
 Version 1.0.3.6 (2026-07-16)
 * Added Escape key handling to close the KrabbelWindow when pressed. This allows users to quickly exit the window without needing to click the close button.
 * Bug fix: Keywords.Clear() was replaced with a new ObservableCollection to avoid issues with the UI.

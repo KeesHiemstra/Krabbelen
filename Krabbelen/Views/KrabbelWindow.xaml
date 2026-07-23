@@ -71,7 +71,7 @@
 									  Background="LightGray"
 									  Padding="0 1 0 1"
 									  Focusable="False"
-									  ItemsSource="{Binding Keywords}">
+									  ItemsSource="{Binding Keywords, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel Orientation="Horizontal"/>

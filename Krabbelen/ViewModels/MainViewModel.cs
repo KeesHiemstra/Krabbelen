@@ -30,7 +30,7 @@ namespace Krabbelen.ViewModels
 		public bool DeleteOpenKrabbel = false;
 		public readonly MainWindow View;
 
-#endregion
+		#endregion
 
 		#region [ Properties ]
 
@@ -43,9 +43,9 @@ namespace Krabbelen.ViewModels
 		// This property is used to track if any changes have been made to the Krabbels
 		// collection or any of its items. The OnPropertyChanged event handler for the
 		// Krabbels collection and its items will set this property to true when a change occurs.
-		public bool KrabbelsChanged 
-		{ 
-			get; 
+		public bool KrabbelsChanged
+		{
+			get;
 			set
 			{
 				if (value != field)
@@ -98,7 +98,7 @@ namespace Krabbelen.ViewModels
 			if (File.Exists(path))
 			{
 				string json = File.ReadAllText(path);
-				ObservableCollection<Krabbel> krabbels = 
+				ObservableCollection<Krabbel> krabbels =
 					JsonConvert.DeserializeObject<ObservableCollection<Krabbel>>(json);
 				Krabbels = krabbels;
 			}
@@ -203,7 +203,7 @@ namespace Krabbelen.ViewModels
 
 			// Only one selected item is allowed.
 			if (((DataGrid)e.Source).SelectedItems.Count != 1) { return; }
-			
+
 			Krabbel selectedItem = (Krabbel)((DataGrid)e.Source).SelectedItem;
 			if (selectedItem.Id != 0)
 			{
@@ -253,7 +253,10 @@ namespace Krabbelen.ViewModels
 			if (SelectedKrabbel == null) return;
 
 			// Replaced Keywords.Clear() with a new ObservableCollection to avoid errors.
-			Keywords = new ObservableCollection<Controls.KeywordCard>();
+			//Keywords.Clear();
+			//Keywords = new ObservableCollection<Controls.KeywordCard>();
+			// But new keywords not directly visible, so kept Keywords.Clean.
+			Keywords.Clear();
 
 			if (SelectedKrabbel.Keywords != null && SelectedKrabbel.Keywords.Count > 0)
 			{
@@ -264,7 +267,7 @@ namespace Krabbelen.ViewModels
 					{
 						Keywords.Add(new Controls.KeywordCard() { KeywordText = { Text = keyword } });
 					}
-					catch { }				
+					catch { }
 				}
 			}
 		}

@@ -38,7 +38,7 @@ namespace Krabbelen.ViewModels
 				Left = VM.View.Left + 100,
 				Top = VM.View.Top + 20,
 				Title = SelectedKrabbel.Id == 0 ? "New Krabbel" : $"Edit Krabbel ({SelectedKrabbel.Id})",
-				// DataContext = this [Wrong data context]
+				// DataContext = this //[Wrong data context]
 			};
 			View = view;
 			bool? result = View.ShowDialog();
