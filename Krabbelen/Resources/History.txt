@@ -1,5 +1,8 @@
 ﻿Version history of the Krabbelen application.
 =============================================
+Version 1.0.4.8 (2026-08-01)
+* Added a new feature to show the keywords in a larger font size when hovering over a krabbel in the KeywordCard (Animation).
+
 Version 1.0.3.7 (2026-07-23)
 * Bug fix: Copied Keywords.Clear() back. New keywords was not directly visible.
 
