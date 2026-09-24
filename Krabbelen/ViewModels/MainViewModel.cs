@@ -167,7 +167,10 @@ namespace Krabbelen.ViewModels
 
 		internal void NewKrabbel()
 		{
-			SelectedKrabbel = new Krabbel();
+			SelectedKrabbel = new Krabbel()
+			{
+				Created = DateTime.Now
+			};
 			OpenKrabbel(SelectedKrabbel);
 		}
 

@@ -10,6 +10,18 @@ namespace Krabbelen.Models
 	public class Krabbel : INotifyPropertyChanged
 	{
 		public int Id { get; set; }
+		public string Subject
+		{
+			get;
+			set
+			{
+				if (field != value)
+				{
+					field = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 		public string Text 
 		{
 			get;
@@ -23,6 +35,7 @@ namespace Krabbelen.Models
 			} 
 		}
 		public ObservableCollection<string> Keywords { get; set; } = new ObservableCollection<string>();
+		public DateTime Created { get; set; }
 		public DateTime Changed { get; set; }
 
 		[JsonIgnore]

@@ -1,5 +1,9 @@
 ﻿Version history of the Krabbelen application.
 =============================================
+Version 1.1.0.9
+* Added Subject and created date time.
+* Added a new feature to show the subject and created date time of a krabbel in the KrabbelWindow. The subject is displayed in a ComboBox, allowing users to select from existing subjects or enter a new one. The created date time is displayed in a read-only TextBlock, providing users with information about when the krabbel was created.
+
 Version 1.0.4.8 (2026-08-01)
 * Added a new feature to show the keywords in a larger font size when hovering over a krabbel in the KeywordCard (Animation).
 

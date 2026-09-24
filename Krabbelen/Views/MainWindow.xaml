@@ -11,7 +11,7 @@
 				mc:Ignorable="d"
         Title="MainWindow" 
 				Height="450" 
-				Width="800"
+				Width="1000"
 				Closing="Window_Closing">
 
 	<Window.CommandBindings>
@@ -61,10 +61,19 @@
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Text" 
 														Binding="{Binding Text}" 
-														Width="2*"/>
+														Width="3*"/>
+				<DataGridTextColumn Header="Subject" 
+														Binding="{Binding Subject}" 
+														Width="*"/>
 				<DataGridTextColumn Header="Keywords" 
 														Binding="{Binding DisplayKeywords}" 
-														Width="*"/>
+														Width="2*"/>
+				<DataGridTextColumn Header="Created" 
+														Binding="{Binding Created, StringFormat={}{0:MM-dd}}" 
+														Width="Auto"/>
+				<DataGridTextColumn Header="Changed" 
+														Binding="{Binding Changed, StringFormat={}{0:MM-dd}}" 
+														Width="Auto"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
